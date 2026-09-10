@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Surprise 💜</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        overflow: hidden;
+        font-family: "Segoe UI", sans-serif;
+        background:
+            radial-gradient(circle at 50% 40%, #4b3b8f 0%, #241b4d 35%, #0d102d 75%);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .stars {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+            radial-gradient(white 1px, transparent 1px),
+            radial-gradient(#b9a7ff 1px, transparent 1px);
+        background-size: 70px 70px, 110px 110px;
+        background-position: 0 0, 35px 40px;
+        opacity: 0.35;
+        animation: moveStars 12s linear infinite;
+    }
+
+    @keyframes moveStars {
+        from { transform: translateY(0); }
+        to { transform: translateY(70px); }
+    }
+
+    .container {
+        width: 100%;
+        text-align: center;
+        padding: 25px;
+        z-index: 2;
+    }
+
+    .intro {
+        animation: fadeIn 1.5s ease;
+    }
+
+    .intro h1 {
+        font-size: clamp(2rem, 7vw, 4rem);
+        margin-bottom: 30px;
+        text-shadow: 0 0 15px #a98cff, 0 0 35px #6c4cff;
+    }
+
+    button {
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        box-shadow: 0 0 20px #7655ff;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 35px #9b7cff;
+    }
+
+    .surprise {
+        display: none;
+        animation: appear 1.2s ease;
+    }
+
+    .cake-area {
+        position: relative;
+        width: 330px;
+        height: 330px;
+        margin: 0 auto 10px;
+    }
+
+    .cake {
+        position: absolute;
+        width: 250px;
+        height: 120px;
+        left: 40px;
+        bottom: 35px;
+    }
+
+    .cake-top {
+        position: absolute;
+        width: 250px;
+        height: 65px;
+        background: linear-gradient(135deg, #d8b4fe, #8b5cf6);
+        border-radius: 50%;
+        top: 0;
+        box-shadow: 0 0 25px rgba(171, 132, 255, 0.5);
+    }
+
+    .cake-body {
+        position: absolute;
+        width: 250px;
+        height: 85px;
+        top: 28px;
+        background: linear-gradient(90deg, #7c3aed, #a78bfa, #6d28d9);
+        border-radius: 0 0 22px 22px;
+    }
+
+    .cream {
+        position: absolute;
+        width: 250px;
+        height: 25px;
+        top: 38px;
+        background: #f5edff;
+        border-radius: 0 0 50% 50%;
+        z-index: 3;
+    }
+
+    .candle {
+        position: absolute;
+        width: 18px;
+        height: 65px;
+        top: -55px;
+        border-radius: 5px;
+        background: repeating-linear-gradient(
+            45deg,
+            #ffffff,
+            #ffffff 7px,
+            #b79cff 7px,
+            #b79cff 14px
+        );
+        cursor: pointer;
+        z-index: 5;
+    }
+
+    .candle:nth-child(1) { left: 45px; }
+    .candle:nth-child(2) { left: 116px; }
+    .candle:nth-child(3) { left: 187px; }
+
+    .flame {
+        position: absolute;
+        width: 18px;
+        height: 27px;
+        left: 0;
+        top: -29px;
+        border-radius: 50% 50% 50% 50%;
+        background: #ffd166;
+        box-shadow:
+            0 0 10px #ffd166,
+            0 0 25px #ff9d00,
+            0 0 45px #ff7b00;
+        animation: flicker 0.6s infinite alternate;
+    }
+
+    .flame.off {
+        display: none;
+    }
+
+    @keyframes flicker {
+        from { transform: scale(1) rotate(-3deg); }
+        to { transform: scale(1.15) rotate(3deg); }
+    }
+
+    .cake-hint {
+        font-size: 1rem;
+        color: #d8ccff;
+        margin-top: 5px;
+        animation: pulse 1.5s infinite;
+    }
+
+    .birthday {
+        display: none;
+        font-size: clamp(2.5rem, 10vw, 6rem);
+        font-weight: 900;
+        line-height: 1.05;
+        color: #fff;
+        text-transform: uppercase;
+        text-shadow:
+            0 0 8px #fff,
+            0 0 20px #c084fc,
+            0 0 40px #8b5cf6,
+            0 0 70px #6366f1;
+        animation:
+            birthdayAppear 1.5s ease forwards,
+            glow 1.8s infinite alternate;
+    }
+
+    .sparkle {
+        position: fixed;
+        pointer-events: none;
+        font-size: 20px;
+        animation: sparkle 1.5s forwards;
+    }
+
+    @keyframes sparkle {
+        0% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-100px) scale(1.8);
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes appear {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes birthdayAppear {
+        from {
+            opacity: 0;
+            transform: scale(0.4);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes glow {
+        from {
+            text-shadow:
+                0 0 8px #fff,
+                0 0 20px #c084fc,
+                0 0 40px #8b5cf6;
+        }
+        to {
+            text-shadow:
+                0 0 15px #fff,
+                0 0 35px #d8b4fe,
+                0 0 70px #8b5cf6,
+                0 0 100px #6366f1;
+        }
+    }
+
+    @keyframes pulse {
+        50% { opacity: 0.5; }
+    }
+
+    @media (max-width: 500px) {
+        .cake-area {
+            transform: scale(0.85);
+            margin-top: -10px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<div class="container">
+
+    <!-- INTRO -->
+    <div class="intro" id="intro">
+        <h1>Hey, got a little surprise for you 💜</h1>
+        <button onclick="showSurprise()">Click for your surprise ✨</button>
+    </div>
+
+    <!-- SURPRISE -->
+    <div class="surprise" id="surprise">
+
+        <div class="cake-area" id="cakeArea">
+
+            <div class="cake">
+
+                <div class="cake-top"></div>
+
+                <div class="cake-body"></div>
+
+                <div class="cream"></div>
+
+                <div class="candle" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                </div>
+
+                <div class="candle" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                </div>
+
+                <div class="candle" onclick="blowCandle(this)">
+                    <div class="flame"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="cake-hint" id="hint">
+            Tap the candles ✨
+        </div>
+
+        <div class="birthday" id="birthday">
+            HAPPY<br>
+            BIRTHDAY<br>
+            CUTIE 💜
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let candlesBlown = 0;
+
+function showSurprise() {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("surprise").style.display = "block";
+}
+
+function blowCandle(candle) {
+
+    const flame = candle.querySelector(".flame");
+
+    if (flame.classList.contains("off")) return;
+
+    flame.classList.add("off");
+    candlesBlown++;
+
+    createSparkles(candle);
+
+    if (candlesBlown === 3) {
+
+        setTimeout(() => {
+
+            document.getElementById("cakeArea").style.display = "none";
+            document.getElementById("hint").style.display = "none";
+
+            document.getElementById("birthday").style.display = "block";
+
+            for (let i = 0; i < 25; i++) {
+                setTimeout(createRandomSparkle, i * 80);
+            }
+
+        }, 700);
+    }
+}
+
+function createSparkles(element) {
+
+    for (let i = 0; i < 6; i++) {
+
+        const sparkle = document.createElement("div");
+
+        sparkle.className = "sparkle";
+        sparkle.innerHTML = ["✨", "💜", "⭐", "✦"][Math.floor(Math.random() * 4)];
+
+        const rect = element.getBoundingClientRect();
+
+        sparkle.style.left = rect.left + Math.random() * rect.width + "px";
+        sparkle.style.top = rect.top + "px";
+
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 1500);
+    }
+}
+
+function createRandomSparkle() {
+
+    const sparkle = document.createElement("div");
+
+    sparkle.className = "sparkle";
+    sparkle.innerHTML = ["✨", "💜", "⭐", "✦"][Math.floor(Math.random() * 4)];
+
+    sparkle.style.left = Math.random() * window.innerWidth + "px";
+    sparkle.style.top = (window.innerHeight * 0.4 + Math.random() * 250) + "px";
+
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => sparkle.remove(), 1500);
+}
+
+</script>
+
+</body>
+</html>
